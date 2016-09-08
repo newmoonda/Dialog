@@ -1,0 +1,87 @@
+package newmoon.dialog2;
+
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button btn_sl,btn_cl,btn_pl;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        btn_sl = (Button) findViewById(R.id.btn_sl);
+        btn_cl = (Button) findViewById(R.id.btn_cl);
+        btn_pl = (Button) findViewById(R.id.btn_pl);
+        btn_cl.setOnClickListener(this);
+        btn_sl.setOnClickListener(this);
+        btn_pl.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId()==btn_sl.getId()){
+        new  AlertDialog.Builder(this)
+                .setTitle("风格" )
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setItems(new  String[] {"流行", "摇滚", "古典" },
+                new  DialogInterface.OnClickListener() {
+                    public   void  onClick(DialogInterface dialog,  int  which) {
+                        dialog.dismiss();
+                    }
+                }
+        )
+
+                .show();}
+        else if(view.getId()==btn_cl.getId()){
+
+                final String items[]={"男","女","妖"};
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);  //先得到构造器
+                builder.setTitle("请选择您的性别"); //设置标题
+                builder.setSingleChoiceItems(items,0,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Toast.makeText(MainActivity.this, items[which], Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.create().show();
+
+        }
+        else if(view.getId()==btn_pl.getId()){
+
+            final String items[]={"Thingking in java","java 核心技术","android4高级编程"};
+            final boolean selected[]={true,false,true};
+            AlertDialog.Builder builder=new AlertDialog.Builder(this);  //先得到构造器
+            builder.setTitle("请选择你最爱看的书"); //设置标题
+            builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+            builder.setMultiChoiceItems(items,selected,new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                }
+            });
+            builder.setPositiveButton("提交",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Toast.makeText(MainActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
+                    //android会自动根据你选择的改变selected数组的值。
+                    for (int i=0;i<selected.length;i++){
+                        Log.e("Newmoon",""+selected[i]);
+                    }
+                }
+            });
+            builder.create().show();
+
+        }
+
+    }
+}
